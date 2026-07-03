@@ -1,0 +1,59 @@
+{
+    "name": "innis/coding-standards",
+    "description": "PHPStan rules that enforce the Innis coding conventions: clean-architecture layering, banned traits, interface/collection/exception placement, value-object immutability, and naming smells.",
+    "type": "phpstan-extension",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "John Innis",
+            "email": "john@innis.xyz",
+            "homepage": "https://www.innis.xyz/"
+        }
+    ],
+    "require": {
+        "php": "^8.4",
+        "nikic/php-parser": "^5.0",
+        "phpstan/phpstan": "~2.2.2"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.95",
+        "phpstan/phpstan-phpunit": "^2.0",
+        "phpunit/phpunit": "^13.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Innis\\CodingStandards\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Innis\\CodingStandards\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "phpstan": {
+            "includes": [
+                "extension.neon"
+            ]
+        },
+        "branch-alias": {
+            "dev-master": "0.1.x-dev"
+        }
+    },
+    "scripts": {
+        "test": [
+            "phpunit",
+            "@analyse"
+        ],
+        "test-unit": "phpunit --testsuite=Unit",
+        "test-coverage": "XDEBUG_MODE=coverage phpunit --coverage-html var/tests/coverage/html --coverage-text --coverage-clover var/tests/coverage/clover.xml",
+        "analyse": "phpstan analyse",
+        "fix-style": "php-cs-fixer fix",
+        "check-style": "php-cs-fixer fix --dry-run --diff"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true
+    }
+}

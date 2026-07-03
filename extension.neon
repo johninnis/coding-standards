@@ -1,0 +1,149 @@
+services:
+    -
+        class: Innis\CodingStandards\Support\DeliberateFence
+
+    # --- Error-level rules (a departure is an immediate refactor) ---
+    -
+        class: Innis\CodingStandards\Rules\StrictTypesRule
+        tags:
+            - phpstan.rules.rule
+    -
+        class: Innis\CodingStandards\Rules\NoTraitsRule
+        tags:
+            - phpstan.rules.rule
+    -
+        class: Innis\CodingStandards\Rules\CleanArchitectureLayeringRule
+        tags:
+            - phpstan.rules.rule
+    -
+        class: Innis\CodingStandards\Rules\InterfaceNamingRule
+        tags:
+            - phpstan.rules.rule
+    -
+        class: Innis\CodingStandards\Rules\CollectionPlacementRule
+        tags:
+            - phpstan.rules.rule
+    -
+        class: Innis\CodingStandards\Rules\ValueObjectImmutabilityRule
+        tags:
+            - phpstan.rules.rule
+    -
+        class: Innis\CodingStandards\Rules\FailureNotThrowableRule
+        tags:
+            - phpstan.rules.rule
+    -
+        class: Innis\CodingStandards\Rules\ExceptionShapeRule
+        tags:
+            - phpstan.rules.rule
+    -
+        class: Innis\CodingStandards\Rules\RepositoryInterfacesOnlyRule
+        tags:
+            - phpstan.rules.rule
+    -
+        class: Innis\CodingStandards\Rules\DomainPurityRule
+        tags:
+            - phpstan.rules.rule
+    -
+        class: Innis\CodingStandards\Rules\ValueParserConventionRule
+        tags:
+            - phpstan.rules.rule
+    -
+        class: Innis\CodingStandards\Rules\OverrideAttributeRule
+        tags:
+            - phpstan.rules.rule
+    -
+        class: Innis\CodingStandards\Rules\ConstructorPromotionRule
+        tags:
+            - phpstan.rules.rule
+    -
+        class: Innis\CodingStandards\Rules\TypedConstantsRule
+        tags:
+            - phpstan.rules.rule
+    -
+        class: Innis\CodingStandards\Rules\CollectionContractRule
+        tags:
+            - phpstan.rules.rule
+    -
+        class: Innis\CodingStandards\Rules\ErrorSuffixRule
+        tags:
+            - phpstan.rules.rule
+    -
+        class: Innis\CodingStandards\Rules\ValueObjectAccessorsRule
+        tags:
+            - phpstan.rules.rule
+    -
+        class: Innis\CodingStandards\Rules\NoEmojisRule
+        tags:
+            - phpstan.rules.rule
+    -
+        class: Innis\CodingStandards\Rules\NoSingletonRule
+        tags:
+            - phpstan.rules.rule
+    -
+        class: Innis\CodingStandards\Rules\UkEnglishRule
+        tags:
+            - phpstan.rules.rule
+    -
+        class: Innis\CodingStandards\Rules\EqualsSelfRule
+        tags:
+            - phpstan.rules.rule
+    -
+        class: Innis\CodingStandards\Rules\TransformationReturnsSelfRule
+        tags:
+            - phpstan.rules.rule
+
+    # --- Collection-over-array (whole-package, via collectors) ---
+    -
+        class: Innis\CodingStandards\Rules\CollectionOverArray\CollectionElementCollector
+        tags:
+            - phpstan.collector
+    -
+        class: Innis\CodingStandards\Rules\CollectionOverArray\ArrayUsageCollector
+        tags:
+            - phpstan.collector
+    -
+        class: Innis\CodingStandards\Rules\CollectionOverArray\CollectionOverArrayRule
+        tags:
+            - phpstan.rules.rule
+
+    # --- Primitive-at-boundary (whole-package, via collectors) ---
+    -
+        class: Innis\CodingStandards\Rules\PrimitiveAtBoundary\ValueObjectConceptCollector
+        tags:
+            - phpstan.collector
+    -
+        class: Innis\CodingStandards\Rules\PrimitiveAtBoundary\PrimitiveUsageCollector
+        tags:
+            - phpstan.collector
+    -
+        class: Innis\CodingStandards\Rules\PrimitiveAtBoundary\PrimitiveAtBoundaryRule
+        tags:
+            - phpstan.rules.rule
+
+    # --- Smell-level rules (a warning to review; ignore the identifier to silence) ---
+    -
+        class: Innis\CodingStandards\Rules\SmellSuffixRule
+        tags:
+            - phpstan.rules.rule
+    -
+        class: Innis\CodingStandards\Rules\ParameterCountRule
+        tags:
+            - phpstan.rules.rule
+
+    # --- Port placement (whole-package, via collectors) ---
+    -
+        class: Innis\CodingStandards\Rules\PortPlacement\InstantiationCollector
+        tags:
+            - phpstan.collector
+    -
+        class: Innis\CodingStandards\Rules\PortPlacement\ServiceImplementorCollector
+        tags:
+            - phpstan.collector
+    -
+        class: Innis\CodingStandards\Rules\PortPlacement\PortInterfaceCollector
+        tags:
+            - phpstan.collector
+    -
+        class: Innis\CodingStandards\Rules\PortPlacement\PortPlacementRule
+        tags:
+            - phpstan.rules.rule
