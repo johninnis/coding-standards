@@ -36,7 +36,7 @@ services:
         tags:
             - phpstan.rules.rule
     -
-        class: Innis\CodingStandards\Rules\RepositoryInterfacesOnlyRule
+        class: Innis\CodingStandards\Rules\NoDomainRepositoryRule
         tags:
             - phpstan.rules.rule
     -
