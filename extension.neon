@@ -16,6 +16,10 @@ services:
         tags:
             - phpstan.rules.rule
     -
+        class: Innis\CodingStandards\Rules\LayerPlacementRule
+        tags:
+            - phpstan.rules.rule
+    -
         class: Innis\CodingStandards\Rules\InterfaceNamingRule
         tags:
             - phpstan.rules.rule
