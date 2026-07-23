@@ -43,7 +43,7 @@ project-wide `ignoreErrors` for a genuine one-off exception.
 | `innis.strictTypes` | A file that declares a type but is missing `declare(strict_types=1)`. |
 | `innis.noTraits` | Any `trait` (banned ecosystem-wide; share behaviour through an injected collaborator). |
 | `innis.cleanArchitecture` | A `use` import that violates inward-only layering — Domain→Domain only; Application→Application/Domain; Infrastructure→Infrastructure/Application/Domain; Presentation→any. Catches cross-package leaks too. |
-| `innis.layerPlacement` | A class filed under no layer segment that declares a contract carrying one (`implements` on a class or enum, `extends` on a class or interface). Unlayered code is exempt from the layering rule, and that exemption is for the composition root; being bound to a layered contract means the class is layered code and must be filed where the inward rule sees it. A class sitting outside the layers to avoid importing outward wants the dependency inverted, not the file moved. |
+| `innis.layerPlacement` | A class filed under no layer segment that declares a contract carrying one (`implements` on a class or enum, `extends` on a class or interface). Unlayered code is exempt from the layering rule, and that exemption is for the composition root; being bound to a layered contract means the class is layered code and must be filed where the inward rule sees it. A class sitting outside the layers to avoid importing outward wants the dependency inverted, not the file moved. An anonymous class has no namespace of its own and is judged where it is declared, so an inline double in a test, one built inside a layered file, and one in an unnamespaced entry-point script are all silent. |
 | `innis.interfaceNaming` | An `interface` whose name does not end in `Interface`. |
 | `innis.collectionPlacement` | A `*Collection` class, or one extending `TypedCollection`, outside a `Collection/` namespace. |
 | `innis.collectionFlat` | Sub-grouping under `Collection/` by concept (`Collection/Reference/…`). |
@@ -81,8 +81,8 @@ Rules that also look at the enclosing class let a class-level fence cover its me
 is pinned to the method or function it flags, so a wide constructor is fenced on the constructor, not the
 class.
 
-- **Structural / type-contract rules** (`valueObjectImmutable`, `repositoryInterfacesOnly`,
-  `portPlacement`, `domainPurity`, `tryFromReturnsNullable`/`tryFromDoesNotThrow`/`fromIsTotal`, `promoteConstructorProperties`,
+- **Structural / type-contract rules** (`valueObjectImmutable`, `noDomainRepository`,
+  `layerPlacement`, `portPlacement`, `domainPurity`, `tryFromReturnsNullable`/`tryFromDoesNotThrow`/`fromIsTotal`, `promoteConstructorProperties`,
   `noSingleton`, `equalsSelf`, `transformationReturnsSelf`) honour a fence on the class (or, for the
   per-method ones, on the method).
 - **Smell / opinion rules** (`tooManyParameters`, the `*Suffix` names, `primitiveAtBoundary`,
@@ -94,7 +94,8 @@ Layering, trait, naming, `overrideAttribute`, `typedConstants`, `collectionContr
 `valueObjectAccessors`, `noEmojis` and `collectionOverArray` are **always enforced** — a departure there
 is an immediate refactor, not a comment. Several rules also relax in test code: `ukEnglish`/`noEmojis`
 skip test files, `overrideAttribute` enforces only first-party contracts there (framework overrides like
-`setUp` are exempt), `tooManyParameters` exempts data-record constructors.
+`setUp` are exempt), `tooManyParameters` exempts data-record constructors, and `layerPlacement` skips
+test namespaces — which covers an inline anonymous double, since it is judged where it is declared.
 
 To silence a rule project-wide (rather than a single site), target its identifier:
 

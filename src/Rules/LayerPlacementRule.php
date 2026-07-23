@@ -30,6 +30,14 @@ use PHPStan\Rules\RuleErrorBuilder;
  * layer segment (a framework's, a library's) say nothing about placement and are ignored, and an
  * ADR-fenced departure is exempt.
  *
+ * An anonymous class has no name, so it has no namespace of its own and nothing to read a layer
+ * from. It is filed wherever it is declared, and it is judged there: an inline double in a test
+ * mirrors the test's namespace, one built inside a layered file belongs to that layer, and one in
+ * an unnamespaced script is part of the composition root — a file PSR-4 cannot autoload can only be
+ * an entry point. What remains reportable is an anonymous class declared in a namespaced file that
+ * carries no layer, and its fix is to file that declaring file, since the class cannot move without
+ * first being named.
+ *
  * @implements Rule<InClassNode>
  */
 final class LayerPlacementRule implements Rule
@@ -52,12 +60,17 @@ final class LayerPlacementRule implements Rule
             return [];
         }
 
-        $namespace = ClassNames::namespace($node->getClassReflection()->getName());
-        if (ClassNames::isTestNamespace($namespace) || null !== Layer::of($namespace)) {
+        $reflection = $node->getClassReflection();
+        $anonymous = $reflection->isAnonymous();
+
+        $namespace = $anonymous ? $scope->getNamespace() : ClassNames::namespace($reflection->getName());
+        if (null === $namespace || ClassNames::isTestNamespace($namespace) || null !== Layer::of($namespace)) {
             return [];
         }
 
-        $name = ClassNames::short($node->getClassReflection()->getName());
+        $subject = $anonymous ? 'The anonymous class' : ClassNames::short($reflection->getName());
+        $remedy = $anonymous ? 'file its declaring file' : 'file it';
+
         $errors = [];
         foreach ($this->contracts($original) as $verb => $contracts) {
             foreach ($contracts as $contract) {
@@ -66,7 +79,7 @@ final class LayerPlacementRule implements Rule
                     continue;
                 }
 
-                $errors[] = RuleErrorBuilder::message("{$name} {$verb} the {$layer} contract {$contract} but sits outside the layers; only composition belongs there — file it under a layer so its dependencies are checked.")
+                $errors[] = RuleErrorBuilder::message("{$subject} {$verb} the {$layer} contract {$contract} but sits outside the layers; only composition belongs there — {$remedy} under a layer so its dependencies are checked.")
                     ->identifier('innis.layerPlacement')
                     ->line($node->getStartLine())
                     ->build();

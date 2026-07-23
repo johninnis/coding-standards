@@ -41,6 +41,13 @@ must be filed under a layer so the inward rule applies to it.
   it would otherwise import outward, the dependency wants inverting behind a port — the file then
   belongs in a layer and lands there honestly. The message says to file it under a layer; it does not
   say which, because that is the design decision the report exists to force.
+- A class is read by its namespace, which presumes it has a name. An anonymous class does not, so it
+  is read by the namespace of the file that declares it. It is filed there and nowhere else: it has
+  no autoload entry, and it cannot be moved without first being named into existence. An inline
+  double in a test is therefore covered by the test exemption, an anonymous class built inside a
+  layered file belongs to that layer, and one in an unnamespaced script is composition — PSR-4 cannot
+  autoload such a file, so it can only be an entry point. The reportable case is an anonymous class
+  in a namespaced file carrying no layer, and the message there asks for the declaring file to move.
 
 ## Consequences
 
@@ -53,3 +60,7 @@ must be filed under a layer so the inward rule applies to it.
   whose cause is in another file; the declared form keeps the report and its fix in one place.
 - Interfaces are judged by what they extend, so an unlayered interface extending a layered one is
   flagged for the same reason a class is.
+- Reading an anonymous class by its declaring file means an entry-point script can hold a layered
+  double that no rule checks. That is the composition-root exemption behaving as designed rather than
+  a new gap: the alternative is a report whose only remedy — name the class and file it — is wrong
+  for the throwaway doubles that make up nearly every case.

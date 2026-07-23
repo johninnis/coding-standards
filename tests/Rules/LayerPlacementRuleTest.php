@@ -52,4 +52,26 @@ final class LayerPlacementRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__.'/../data/LayerPlacement/Fenced.php'], []);
     }
+
+    public function testAcceptsAnInlineDoubleDeclaredInATest(): void
+    {
+        $this->analyse([__DIR__.'/../data/LayerPlacement/AnonymousInTestNamespace.php'], []);
+    }
+
+    public function testAcceptsAnAnonymousClassDeclaredInsideALayer(): void
+    {
+        $this->analyse([__DIR__.'/../data/LayerPlacement/AnonymousLayered.php'], []);
+    }
+
+    public function testAcceptsAnAnonymousClassDeclaredInAnUnnamespacedScript(): void
+    {
+        $this->analyse([__DIR__.'/../data/LayerPlacement/AnonymousScript.php'], []);
+    }
+
+    public function testFlagsAnAnonymousClassDeclaredInAnUnlayeredNamespace(): void
+    {
+        $this->analyse([__DIR__.'/../data/LayerPlacement/AnonymousUnlayered.php'], [
+            ['The anonymous class implements the Application contract Acme\Kernel\Application\Port\LifecycleInterface but sits outside the layers; only composition belongs there — file its declaring file under a layer so its dependencies are checked.', 13],
+        ]);
+    }
 }
