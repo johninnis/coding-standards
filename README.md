@@ -59,7 +59,7 @@ fence (see *Deliberate departures*) over a project-wide `ignoreErrors` for a gen
 | `innis.promoteConstructorProperties` | A `ValueObject/`, `DTO/` or `Entity/` constructor that declares a field and assigns a same-named parameter to it in the body, instead of promoting the property. Only a plain pass-through assignment is flagged. |
 | `innis.typedConstants` | A class, interface or enum constant declared without a type. |
 | `innis.collectionContract` | A concrete typed collection (a `*Collection`, or a leaf extending `TypedCollection`) that is not `final` or does not implement `IteratorAggregate` + `Countable`. |
-| `innis.errorSuffix` | A non-throwable class named `*Error` — a returned outcome value uses the `*Failure` suffix (`\Error` is a `Throwable`). |
+| `innis.errorSuffix` | A non-throwable class or enum named `*Error` — a returned outcome value uses the `*Failure` suffix (`\Error` is a `Throwable`). An enum can never be throwable, so an `*Error` enum is always caught. |
 | `innis.valueObjectAccessors` | A property hook on a `ValueObject/`, or asymmetric visibility (`private(set)`) on a `ValueObject/` or `Entity/` — keep a uniform `getX()` read surface. |
 | `innis.noEmojis` | An emoji anywhere in a source file (code, comment, or string). |
 | `innis.noSingleton` | A static property typed as its own class, or a static `getInstance()` accessor — a singleton/service locator; inject an interface instead. |

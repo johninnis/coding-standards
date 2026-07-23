@@ -29,4 +29,18 @@ final class ErrorSuffixRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__.'/../data/ErrorSuffix/Valid.php'], []);
     }
+
+    public function testFlagsAnErrorSuffixedEnum(): void
+    {
+        // An enum can never extend Throwable, so an *Error enum is always the returned outcome
+        // value the suffix denies it is.
+        $this->analyse([__DIR__.'/../data/ErrorSuffix/NonThrowableEnum.php'], [
+            ['MetadataError is not throwable; a returned outcome value uses the *Failure suffix, not *Error (\Error is a Throwable).', 7],
+        ]);
+    }
+
+    public function testAcceptsAFailureSuffixedEnum(): void
+    {
+        $this->analyse([__DIR__.'/../data/ErrorSuffix/ValidEnum.php'], []);
+    }
 }
