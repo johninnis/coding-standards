@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Innis\CodingStandards\Rules\PortPlacement;
 
 use Innis\CodingStandards\Support\ClassNames;
-use Innis\CodingStandards\Support\DeliberateFence;
 use Override;
 use PhpParser\Node;
 use PhpParser\Node\Stmt\Interface_;
@@ -14,16 +13,12 @@ use PHPStan\Collectors\Collector;
 use PHPStan\Node\InClassNode;
 
 /**
- * Collects each non-fenced `Application/Port` interface.
+ * Collects each `Application/Port` interface.
  *
  * @implements Collector<InClassNode, array{name: string, line: int}>
  */
 final class PortInterfaceCollector implements Collector
 {
-    public function __construct(private readonly DeliberateFence $fence)
-    {
-    }
-
     #[Override]
     public function getNodeType(): string
     {
@@ -42,10 +37,7 @@ final class PortInterfaceCollector implements Collector
         }
 
         $namespace = ClassNames::namespace($node->getClassReflection()->getName());
-        if (ClassNames::isTestNamespace($namespace)
-            || !ClassNames::hasSegment($namespace, 'Application\\Port')
-            || $this->fence->isFenced($original)
-        ) {
+        if (ClassNames::isTestNamespace($namespace) || !ClassNames::hasSegment($namespace, 'Application\\Port')) {
             return null;
         }
 

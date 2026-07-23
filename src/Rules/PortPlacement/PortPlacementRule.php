@@ -17,8 +17,9 @@ use PHPStan\Rules\RuleErrorBuilder;
  * internal collaborator — its interface belongs in `Application/Service/`, not `Port/`.
  *
  * The "constructed by the package" guard keeps a host-supplied driven port (one the host
- * wires and can replace, never `new`ed by the package) out of the results. An ADR fence on
- * the interface also exempts it (handled by the collector).
+ * wires and can replace, never `new`ed by the package) out of the results. That guard is the
+ * only exemption: the rule takes no fence, because moving the `new` out to host wiring is what
+ * makes an interface a port, and a port that cannot pass without a fence is mis-filed (ADR-0015).
  *
  * @implements Rule<CollectedDataNode>
  */

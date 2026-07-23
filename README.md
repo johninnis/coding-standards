@@ -34,9 +34,9 @@ the level setting.
 
 Every rule reports with a stable `innis.*` identifier so it can be targeted in `ignoreErrors`. There
 is no separate "warning" tier in PHPStan — everything below is a reported error — but the smell rules
-(the `*Suffix` names and `tooManyParameters`) and `portPlacement` are the ones you most often silence
-per case. Prefer a code-pinned `// Deliberate:` / ADR fence (see *Deliberate departures*) over a
-project-wide `ignoreErrors` for a genuine one-off exception.
+(`adapterSuffix`, `managerSuffix`, `serviceSuffix`, `tooManyParameters`, `primitiveAtBoundary`,
+`ukEnglish`) are the ones you most often silence per case. Prefer a code-pinned `// Deliberate:` / ADR
+fence (see *Deliberate departures*) over a project-wide `ignoreErrors` for a genuine one-off exception.
 
 | Identifier | What it flags |
 | --- | --- |
@@ -82,17 +82,19 @@ is pinned to the method or function it flags, so a wide constructor is fenced on
 class.
 
 - **Structural / type-contract rules** (`valueObjectImmutable`, `noDomainRepository`,
-  `layerPlacement`, `portPlacement`, `domainPurity`, `tryFromReturnsNullable`/`tryFromDoesNotThrow`/`fromIsTotal`, `promoteConstructorProperties`,
+  `layerPlacement`, `domainPurity`, `tryFromReturnsNullable`/`tryFromDoesNotThrow`/`fromIsTotal`, `promoteConstructorProperties`,
   `noSingleton`, `equalsSelf`, `transformationReturnsSelf`) honour a fence on the class (or, for the
   per-method ones, on the method).
-- **Smell / opinion rules** (`tooManyParameters`, the `*Suffix` names, `primitiveAtBoundary`,
-  `ukEnglish`) honour a fence too — on the method for a parameter-count smell, the class for a suffix
-  smell, the method/property/class for a primitive-at-boundary, and the declaration (or its enclosing
-  class) whose name is US-spelled for `ukEnglish`. Pin the fence at the smell site, with an ADR.
+- **Smell / opinion rules** (`tooManyParameters`, the catch-all suffixes `adapterSuffix` /
+  `managerSuffix` / `serviceSuffix`, `primitiveAtBoundary`, `ukEnglish`) honour a fence too — on the
+  method for a parameter-count smell, the class for a suffix smell, the method/property/class for a
+  primitive-at-boundary, and the declaration (or its enclosing class) whose name is US-spelled for
+  `ukEnglish`. Pin the fence at the smell site, with an ADR.
 
-Layering, trait, naming, `overrideAttribute`, `typedConstants`, `collectionContract`,
-`valueObjectAccessors`, `noEmojis` and `collectionOverArray` are **always enforced** — a departure there
-is an immediate refactor, not a comment. Several rules also relax in test code: `ukEnglish`/`noEmojis`
+Layering, trait, naming (including `errorSuffix` and `failureNotThrowable`, which are not catch-all
+smells but the `\Error`-is-throwable split), `portPlacement` (ADR-0015), `overrideAttribute`,
+`typedConstants`, `collectionContract`, `valueObjectAccessors`, `noEmojis` and `collectionOverArray`
+are **always enforced** — a departure there is an immediate refactor, not a comment. Several rules also relax in test code: `ukEnglish`/`noEmojis`
 skip test files, `overrideAttribute` enforces only first-party contracts there (framework overrides like
 `setUp` are exempt), `tooManyParameters` exempts data-record constructors, and `layerPlacement` skips
 test namespaces — which covers an inline anonymous double, since it is judged where it is declared.

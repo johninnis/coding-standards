@@ -2,7 +2,8 @@
 
 ## Status
 
-Accepted
+Accepted. The fence clause is superseded by ADR-0015 — `portPlacement` honours no fence; the rest
+of this decision stands.
 
 ## Context
 
@@ -40,8 +41,8 @@ script, an example or demo) or in a test namespace is the host or the harness su
 implementation — which is exactly what a driven port invites. Only construction by the package's own
 layered code makes a collaborator internal.
 
-Matching is by short name across collectors, as in ADR-0008 and ADR-0010, and the port interface
-honours the `// Deliberate:` / ADR fence.
+Matching is by short name across collectors, as in ADR-0008 and ADR-0010. (This decision originally
+had the port interface honour the `// Deliberate:` / ADR fence; ADR-0015 withdrew that.)
 
 ## Consequences
 
@@ -57,6 +58,7 @@ honours the `// Deliberate:` / ADR fence.
 - Detection rides the `\Application\Port` and `\Application\Service` segment convention. An interface
   filed outside those segments is not seen; placement is enforced against the convention, and the
   convention is the source of truth.
-- A port genuinely constructed by the package in one spot but truly host-replaceable carries a fence on
-  the interface. The construction-ownership signal is high but not absolute, which is why the fence is
-  honoured here rather than the rule being treated as a pure fact.
+- A port genuinely constructed by the package in one spot but truly host-replaceable was to carry a
+  fence on the interface, the construction-ownership signal being high but not absolute. ADR-0015
+  withdrew that: the case was never once reached for across the ecosystem, and moving the `new` out to
+  host wiring already says the same thing while making it true.
