@@ -43,6 +43,7 @@ project-wide `ignoreErrors` for a genuine one-off exception.
 | `innis.strictTypes` | A file that declares a type but is missing `declare(strict_types=1)`. |
 | `innis.noTraits` | Any `trait` (banned ecosystem-wide; share behaviour through an injected collaborator). |
 | `innis.cleanArchitecture` | A `use` import that violates inward-only layering — Domain→Domain only; Application→Application/Domain; Infrastructure→Infrastructure/Application/Domain; Presentation→any. Catches cross-package leaks too. |
+| `innis.layerPlacement` | A class filed under no layer segment that declares a contract carrying one (`implements` on a class or enum, `extends` on a class or interface). Unlayered code is exempt from the layering rule, and that exemption is for the composition root; being bound to a layered contract means the class is layered code and must be filed where the inward rule sees it. A class sitting outside the layers to avoid importing outward wants the dependency inverted, not the file moved. |
 | `innis.interfaceNaming` | An `interface` whose name does not end in `Interface`. |
 | `innis.collectionPlacement` | A `*Collection` class, or one extending `TypedCollection`, outside a `Collection/` namespace. |
 | `innis.collectionFlat` | Sub-grouping under `Collection/` by concept (`Collection/Reference/…`). |
@@ -50,7 +51,7 @@ project-wide `ignoreErrors` for a genuine one-off exception.
 | `innis.failureNotThrowable` | A `*Failure` (returned-outcome) type that is throwable — a fault uses the `*Exception` suffix. |
 | `innis.exceptionPlacement` | A throwable / `*Exception` class outside an `Exception/` namespace. |
 | `innis.exceptionShape` | An exception class that is neither `final` (leaf) nor `abstract` (base). |
-| `innis.repositoryInterfacesOnly` | A concrete type in `Domain/Repository` (interfaces only). |
+| `innis.noDomainRepository` | Any type filed under a `Domain\Repository` namespace. A persistence store is a driven port the host supplies and can swap, so its interface belongs in `Application/Port/` beside the clock and the HTTP client — there is no `Domain/Repository`. |
 | `innis.portPlacement` | An `Application/Port/` interface whose implementation is an `Application/Service/` class the package constructs itself — a mis-filed internal collaborator; its interface belongs in `Application/Service/`. |
 | `innis.domainPurity` | A `Domain/` namespace that reaches for impurity directly: a built-in that reads the clock, uses randomness, performs I/O, reads the environment, writes output, pauses, spawns a process or opens a socket; a zero-argument `DateTime`/`DateTimeImmutable`; or a request/session/global superglobal. Push the effect behind a port. |
 | `innis.tryFromReturnsNullable` / `innis.tryFromDoesNotThrow` / `innis.fromIsTotal` | Named constructors follow PHP's from/tryFrom split. A `tryFrom*` parses untrusted input: it returns `?self` (or a `*Failure`) and never throws, so a missed failure is an analyser error. A `from*` is total, trusted construction: it may throw to assert an invariant and does not return nullable — a nullable `from*` is a `tryFrom*` under the wrong name. |
