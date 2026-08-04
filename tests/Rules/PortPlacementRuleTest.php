@@ -8,6 +8,7 @@ use Innis\CodingStandards\Rules\PortPlacement\InstantiationCollector;
 use Innis\CodingStandards\Rules\PortPlacement\PortInterfaceCollector;
 use Innis\CodingStandards\Rules\PortPlacement\PortPlacementRule;
 use Innis\CodingStandards\Rules\PortPlacement\ServiceImplementorCollector;
+use Override;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 
@@ -21,6 +22,7 @@ final class PortPlacementRuleTest extends RuleTestCase
         return new PortPlacementRule();
     }
 
+    #[Override]
     protected function getCollectors(): array
     {
         return [

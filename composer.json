@@ -13,12 +13,13 @@
     "require": {
         "php": "^8.4",
         "nikic/php-parser": "^5.0",
-        "phpstan/phpstan": "~2.2.2"
+        "phpstan/phpstan": "~2.2.6"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.95",
         "phpstan/phpstan-phpunit": "^2.0",
-        "phpunit/phpunit": "^13.1"
+        "phpunit/phpunit": "^13.1",
+        "rector/rector": "~2.5.9"
     },
     "autoload": {
         "psr-4": {
@@ -49,7 +50,9 @@
         "test-coverage": "XDEBUG_MODE=coverage phpunit --coverage-html var/tests/coverage/html --coverage-text --coverage-clover var/tests/coverage/clover.xml",
         "analyse": "phpstan analyse",
         "fix-style": "php-cs-fixer fix",
-        "check-style": "php-cs-fixer fix --dry-run --diff"
+        "check-style": "php-cs-fixer fix --dry-run --diff",
+        "rector": "rector process",
+        "check-rector": "rector process --dry-run"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

@@ -7,6 +7,7 @@ namespace Innis\CodingStandards\Tests\Rules;
 use Innis\CodingStandards\Rules\CollectionOverArray\ArrayUsageCollector;
 use Innis\CodingStandards\Rules\CollectionOverArray\CollectionElementCollector;
 use Innis\CodingStandards\Rules\CollectionOverArray\CollectionOverArrayRule;
+use Override;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 
@@ -20,6 +21,7 @@ final class CollectionOverArrayRuleTest extends RuleTestCase
         return new CollectionOverArrayRule();
     }
 
+    #[Override]
     protected function getCollectors(): array
     {
         return [

@@ -8,6 +8,7 @@ use Innis\CodingStandards\Rules\PrimitiveAtBoundary\PrimitiveAtBoundaryRule;
 use Innis\CodingStandards\Rules\PrimitiveAtBoundary\PrimitiveUsageCollector;
 use Innis\CodingStandards\Rules\PrimitiveAtBoundary\ValueObjectConceptCollector;
 use Innis\CodingStandards\Support\DeliberateFence;
+use Override;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 
@@ -21,6 +22,7 @@ final class PrimitiveAtBoundaryRuleTest extends RuleTestCase
         return new PrimitiveAtBoundaryRule();
     }
 
+    #[Override]
     protected function getCollectors(): array
     {
         return [

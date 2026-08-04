@@ -27,7 +27,7 @@ This manual `includes:` entry is required unless the project has
 [`phpstan/extension-installer`](https://github.com/phpstan/extension-installer) installed, in which
 case the rules are registered automatically and no `includes:` line is needed.
 
-Requires PHP 8.4+ and PHPStan `~2.2.2`. It runs at any PHPStan level; the rules are independent of
+Requires PHP 8.4+ and PHPStan `~2.2.6`. It runs at any PHPStan level; the rules are independent of
 the level setting.
 
 ## What it enforces
@@ -113,4 +113,5 @@ parameters:
 composer test          # phpunit + phpstan (self-analysis, dogfooding these rules)
 composer analyse       # phpstan only
 composer check-style   # php-cs-fixer dry-run
+composer check-rector  # Rector 8.4 modernisation, dry run (CI gate)
 ```

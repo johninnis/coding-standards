@@ -64,7 +64,7 @@ final class NoEmojisRule implements Rule
      */
     private function isTestFile(array $nodes): bool
     {
-        foreach ((new NodeFinder())->findInstanceOf($nodes, Namespace_::class) as $namespace) {
+        foreach (new NodeFinder()->findInstanceOf($nodes, Namespace_::class) as $namespace) {
             if (ClassNames::isTestNamespace($namespace->name?->toString() ?? '')) {
                 return true;
             }

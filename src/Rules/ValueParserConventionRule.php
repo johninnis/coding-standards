@@ -200,7 +200,7 @@ final class ValueParserConventionRule implements Rule
             return false;
         }
 
-        return [] !== (new NodeFinder())->find($method->stmts, static fn (Node $found): bool => $found instanceof Node\Expr\Throw_);
+        return [] !== new NodeFinder()->find($method->stmts, static fn (Node $found): bool => $found instanceof Node\Expr\Throw_);
     }
 
     private function error(string $message, string $identifier, int $line): IdentifierRuleError
