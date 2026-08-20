@@ -10,6 +10,9 @@ PHPStan rules that enforce the Innis coding conventions mechanically, inside the
 every package already has. Because they run on the real parse tree and PHPStan's reflection, aliases,
 grouped `use`, inline fully-qualified names, and non-standard formatting are all handled correctly.
 
+It is the PHP sibling of [`@innis/coding-standards`](https://github.com/johninnis/coding-standards-ts),
+which enforces the same conventions for TypeScript through `deno lint` and CI check scripts.
+
 ## Installation
 
 ```sh
