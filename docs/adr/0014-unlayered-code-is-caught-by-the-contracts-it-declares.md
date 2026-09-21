@@ -6,61 +6,25 @@ Accepted
 
 ## Context
 
-ADR-0013 settled that layer membership is a namespace segment, and that a file carrying no such
-segment is not layered code — the rule says nothing about it. That exemption is deliberate and load
-bearing: it is what keeps `CleanArchitectureLayeringRule` quiet on a package's composition root,
-whose whole job is to reach every layer and wire them together.
+ADR-0013 settled that layer membership is a namespace segment, and that a file carrying no such segment is not layered code — the rule says nothing about it. That exemption is deliberate and load bearing: it is what keeps `CleanArchitectureLayeringRule` quiet on a package's composition root, whose whole job is to reach every layer and wire them together.
 
-It is also a loophole, and one that is reached for by accident rather than by design. An Application
-service that needs a Presentation collaborator fails the inward rule; moving the file to the package
-root makes the failure disappear, because an unlayered file is no longer judged. Nothing about the
-class changed — the outward dependency is still there — but both the rule and the reviewer's eye stop
-seeing it. The move reads as a placement decision when it is really an unresolved dependency.
+It is also a loophole, and one that is reached for by accident rather than by design. An Application service that needs a Presentation collaborator fails the inward rule; moving the file to the package root makes the failure disappear, because an unlayered file is no longer judged. Nothing about the class changed — the outward dependency is still there — but both the rule and the reviewer's eye stop seeing it. The move reads as a placement decision when it is really an unresolved dependency.
 
-Catching that means answering a question the namespace alone cannot: is this unlayered file
-composition, or is it layered code hiding? Requiring every `src/` class to carry a layer segment
-answers it bluntly and wrongly — a survey of the ecosystem's 42 unlayered classes found 39 of them to
-be this package's own PHPStan rules, which are not layered code and never will be, so the blunt form
-needs a standing opt-out to be usable at all.
+Catching that means answering a question the namespace alone cannot: is this unlayered file composition, or is it layered code hiding? Requiring every `src/` class to carry a layer segment answers it bluntly and wrongly — a survey of the ecosystem's 42 unlayered classes found 39 of them to be this package's own PHPStan rules, which are not layered code and never will be, so the blunt form needs a standing opt-out to be usable at all.
 
 ## Decision
 
-`LayerPlacementRule` flags a class with no layer segment that **declares** a contract which has one:
-`implements` on a class or enum, `extends` on a class or interface. Being bound to a Domain,
-Application, Infrastructure or Presentation contract is the tell that a class is layered code, and it
-must be filed under a layer so the inward rule applies to it.
+`LayerPlacementRule` flags a class with no layer segment that **declares** a contract which has one: `implements` on a class or enum, `extends` on a class or interface. Being bound to a Domain, Application, Infrastructure or Presentation contract is the tell that a class is layered code, and it must be filed under a layer so the inward rule applies to it.
 
-- The remaining three unlayered classes in the ecosystem — `HostContainer`, `HostContainer`,
-  `RelayContainer` — implement nothing. Composition constructs; it does not take on contracts. They
-  stay silent, and so does every rule in this package, because `PHPStan\Rules\Rule` carries no layer
-  segment and ADR-0013's `null`-layer skip already ignores it. The check needs no allowlist.
-- Only declared contracts are read, not inherited or transitive ones. This matches the import-only
-  reading of the rule it backs up: both report what the file says, so what a departure costs is
-  visible in the file being judged.
-- The fix a report asks for is not always to move the file. Where the class sits at the root because
-  it would otherwise import outward, the dependency wants inverting behind a port — the file then
-  belongs in a layer and lands there honestly. The message says to file it under a layer; it does not
-  say which, because that is the design decision the report exists to force.
-- A class is read by its namespace, which presumes it has a name. An anonymous class does not, so it
-  is read by the namespace of the file that declares it. It is filed there and nowhere else: it has
-  no autoload entry, and it cannot be moved without first being named into existence. An inline
-  double in a test is therefore covered by the test exemption, an anonymous class built inside a
-  layered file belongs to that layer, and one in an unnamespaced script is composition — PSR-4 cannot
-  autoload such a file, so it can only be an entry point. The reportable case is an anonymous class
-  in a namespaced file carrying no layer, and the message there asks for the declaring file to move.
+- The remaining three unlayered classes in the ecosystem — `HostContainer`, `HostContainer`, `RelayContainer` — implement nothing. Composition constructs; it does not take on contracts. They stay silent, and so does every rule in this package, because `PHPStan\Rules\Rule` carries no layer segment and ADR-0013's `null`-layer skip already ignores it. The check needs no allowlist.
+- Only declared contracts are read, not inherited or transitive ones. This matches the import-only reading of the rule it backs up: both report what the file says, so what a departure costs is visible in the file being judged.
+- The fix a report asks for is not always to move the file. Where the class sits at the root because it would otherwise import outward, the dependency wants inverting behind a port — the file then belongs in a layer and lands there honestly. The message says to file it under a layer; it does not say which, because that is the design decision the report exists to force.
+- A class is read by its namespace, which presumes it has a name. An anonymous class does not, so it is read by the namespace of the file that declares it. It is filed there and nowhere else: it has no autoload entry, and it cannot be moved without first being named into existence. An inline double in a test is therefore covered by the test exemption, an anonymous class built inside a layered file belongs to that layer, and one in an unnamespaced script is composition — PSR-4 cannot autoload such a file, so it can only be an entry point. The reportable case is an anonymous class in a namespaced file carrying no layer, and the message there asks for the declaring file to move.
 
 ## Consequences
 
-- The composition-root exemption survives intact, and is now narrow enough to state: unlayered means
-  wiring only.
-- A genuine root-level class that must implement a layered contract carries a `// Deliberate:` or
-  `ADR-NNNN` fence like any other sanctioned departure.
-- The rule is declaration-scoped, so a class implementing an unlayered interface that itself extends a
-  layered one slips past. Walking the hierarchy would catch it at the cost of reporting a violation
-  whose cause is in another file; the declared form keeps the report and its fix in one place.
-- Interfaces are judged by what they extend, so an unlayered interface extending a layered one is
-  flagged for the same reason a class is.
-- Reading an anonymous class by its declaring file means an entry-point script can hold a layered
-  double that no rule checks. That is the composition-root exemption behaving as designed rather than
-  a new gap: the alternative is a report whose only remedy — name the class and file it — is wrong
-  for the throwaway doubles that make up nearly every case.
+- The composition-root exemption survives intact, and is now narrow enough to state: unlayered means wiring only.
+- A genuine root-level class that must implement a layered contract carries a `// Deliberate:` or `ADR-NNNN` fence like any other sanctioned departure.
+- The rule is declaration-scoped, so a class implementing an unlayered interface that itself extends a layered one slips past. Walking the hierarchy would catch it at the cost of reporting a violation whose cause is in another file; the declared form keeps the report and its fix in one place.
+- Interfaces are judged by what they extend, so an unlayered interface extending a layered one is flagged for the same reason a class is.
+- Reading an anonymous class by its declaring file means an entry-point script can hold a layered double that no rule checks. That is the composition-root exemption behaving as designed rather than a new gap: the alternative is a report whose only remedy — name the class and file it — is wrong for the throwaway doubles that make up nearly every case.

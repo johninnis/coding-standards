@@ -2,16 +2,11 @@
 
 [![CI](https://github.com/johninnis/coding-standards/actions/workflows/ci.yml/badge.svg)](https://github.com/johninnis/coding-standards/actions/workflows/ci.yml)
 
-> These rules encode the conventions of the **Innis ecosystem**. They are deliberately opinionated and
-> almost certainly not to everyone's taste — that is by design. They are published for anyone extending
-> the Innis libraries, or who simply wants to hold their own code to the same standards.
+> These rules encode the conventions of the **Innis ecosystem**. They are deliberately opinionated and almost certainly not to everyone's taste — that is by design. They are published for anyone extending the Innis libraries, or who simply wants to hold their own code to the same standards.
 
-PHPStan rules that enforce the Innis coding conventions mechanically, inside the `phpstan analyse` run
-every package already has. Because they run on the real parse tree and PHPStan's reflection, aliases,
-grouped `use`, inline fully-qualified names, and non-standard formatting are all handled correctly.
+PHPStan rules that enforce the Innis coding conventions mechanically, inside the `phpstan analyse` run every package already has. Because they run on the real parse tree and PHPStan's reflection, aliases, grouped `use`, inline fully-qualified names, and non-standard formatting are all handled correctly.
 
-It is the PHP sibling of [`@innis/coding-standards`](https://github.com/johninnis/coding-standards-ts),
-which enforces the same conventions for TypeScript through `deno lint` and CI check scripts.
+It is the PHP sibling of [`@innis/coding-standards`](https://github.com/johninnis/coding-standards-ts), which enforces the same conventions for TypeScript through `deno lint` and CI check scripts.
 
 ## Installation
 
@@ -26,20 +21,13 @@ includes:
     - vendor/innis/coding-standards/extension.neon
 ```
 
-This manual `includes:` entry is required unless the project has
-[`phpstan/extension-installer`](https://github.com/phpstan/extension-installer) installed, in which
-case the rules are registered automatically and no `includes:` line is needed.
+This manual `includes:` entry is required unless the project has [`phpstan/extension-installer`](https://github.com/phpstan/extension-installer) installed, in which case the rules are registered automatically and no `includes:` line is needed.
 
-Requires PHP 8.4+ and PHPStan `~2.2.6`. It runs at any PHPStan level; the rules are independent of
-the level setting.
+Requires PHP 8.4+ and PHPStan `~2.2.6`. It runs at any PHPStan level; the rules are independent of the level setting.
 
 ## What it enforces
 
-Every rule reports with a stable `innis.*` identifier so it can be targeted in `ignoreErrors`. There
-is no separate "warning" tier in PHPStan — everything below is a reported error — but the smell rules
-(`adapterSuffix`, `managerSuffix`, `serviceSuffix`, `tooManyParameters`, `primitiveAtBoundary`,
-`ukEnglish`) are the ones you most often silence per case. Prefer a code-pinned `// Deliberate:` / ADR
-fence (see *Deliberate departures*) over a project-wide `ignoreErrors` for a genuine one-off exception.
+Every rule reports with a stable `innis.*` identifier so it can be targeted in `ignoreErrors`. There is no separate "warning" tier in PHPStan — everything below is a reported error — but the smell rules (`adapterSuffix`, `managerSuffix`, `serviceSuffix`, `tooManyParameters`, `primitiveAtBoundary`, `ukEnglish`) are the ones you most often silence per case. Prefer a code-pinned `// Deliberate:` / ADR fence (see *Deliberate departures*) over a project-wide `ignoreErrors` for a genuine one-off exception.
 
 | Identifier | What it flags |
 | --- | --- |
@@ -76,31 +64,12 @@ fence (see *Deliberate departures*) over a project-wide `ignoreErrors` for a gen
 
 ## Deliberate departures
 
-The rules that can have a legitimate exception honour the ecosystem's Chesterton's-Fence convention: a
-`// Deliberate: …` comment or an `ADR-NNNN` reference **pinned at the code** marks a justified departure
-and is skipped. The marker is read from the reported node's own comments (see ADR-0011), so it is
-scoped to exactly the unit it sits on — a fence on one method silences that method, not its siblings.
-Rules that also look at the enclosing class let a class-level fence cover its members; `tooManyParameters`
-is pinned to the method or function it flags, so a wide constructor is fenced on the constructor, not the
-class.
+The rules that can have a legitimate exception honour the ecosystem's Chesterton's-Fence convention: a `// Deliberate: …` comment or an `ADR-NNNN` reference **pinned at the code** marks a justified departure and is skipped. The marker is read from the reported node's own comments (see ADR-0011), so it is scoped to exactly the unit it sits on — a fence on one method silences that method, not its siblings. Rules that also look at the enclosing class let a class-level fence cover its members; `tooManyParameters` is pinned to the method or function it flags, so a wide constructor is fenced on the constructor, not the class.
 
-- **Structural / type-contract rules** (`valueObjectImmutable`, `noDomainRepository`,
-  `layerPlacement`, `domainPurity`, `tryFromReturnsNullable`/`tryFromDoesNotThrow`/`fromIsTotal`, `promoteConstructorProperties`,
-  `noSingleton`, `equalsSelf`, `transformationReturnsSelf`) honour a fence on the class (or, for the
-  per-method ones, on the method).
-- **Smell / opinion rules** (`tooManyParameters`, the catch-all suffixes `adapterSuffix` /
-  `managerSuffix` / `serviceSuffix`, `primitiveAtBoundary`, `ukEnglish`) honour a fence too — on the
-  method for a parameter-count smell, the class for a suffix smell, the method/property/class for a
-  primitive-at-boundary, and the declaration (or its enclosing class) whose name is US-spelled for
-  `ukEnglish`. Pin the fence at the smell site, with an ADR.
+- **Structural / type-contract rules** (`valueObjectImmutable`, `noDomainRepository`, `layerPlacement`, `domainPurity`, `tryFromReturnsNullable`/`tryFromDoesNotThrow`/`fromIsTotal`, `promoteConstructorProperties`, `noSingleton`, `equalsSelf`, `transformationReturnsSelf`) honour a fence on the class (or, for the per-method ones, on the method).
+- **Smell / opinion rules** (`tooManyParameters`, the catch-all suffixes `adapterSuffix` / `managerSuffix` / `serviceSuffix`, `primitiveAtBoundary`, `ukEnglish`) honour a fence too — on the method for a parameter-count smell, the class for a suffix smell, the method/property/class for a primitive-at-boundary, and the declaration (or its enclosing class) whose name is US-spelled for `ukEnglish`. Pin the fence at the smell site, with an ADR.
 
-Layering, trait, naming (including `errorSuffix` and `failureNotThrowable`, which are not catch-all
-smells but the `\Error`-is-throwable split), `portPlacement` (ADR-0015), `overrideAttribute`,
-`typedConstants`, `collectionContract`, `valueObjectAccessors`, `noEmojis` and `collectionOverArray`
-are **always enforced** — a departure there is an immediate refactor, not a comment. Several rules also relax in test code: `ukEnglish`/`noEmojis`
-skip test files, `overrideAttribute` enforces only first-party contracts there (framework overrides like
-`setUp` are exempt), `tooManyParameters` exempts data-record constructors, and `layerPlacement` skips
-test namespaces — which covers an inline anonymous double, since it is judged where it is declared.
+Layering, trait, naming (including `errorSuffix` and `failureNotThrowable`, which are not catch-all smells but the `\Error`-is-throwable split), `portPlacement` (ADR-0015), `overrideAttribute`, `typedConstants`, `collectionContract`, `valueObjectAccessors`, `noEmojis` and `collectionOverArray` are **always enforced** — a departure there is an immediate refactor, not a comment. Several rules also relax in test code: `ukEnglish`/`noEmojis` skip test files, `overrideAttribute` enforces only first-party contracts there (framework overrides like `setUp` are exempt), `tooManyParameters` exempts data-record constructors, and `layerPlacement` skips test namespaces — which covers an inline anonymous double, since it is judged where it is declared.
 
 To silence a rule project-wide (rather than a single site), target its identifier:
 
