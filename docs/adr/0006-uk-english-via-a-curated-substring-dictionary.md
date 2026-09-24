@@ -1,4 +1,4 @@
-# 0006. UK English is enforced with a curated substring dictionary over identifiers
+# 6. UK English is enforced with a curated substring dictionary over identifiers
 
 ## Status
 

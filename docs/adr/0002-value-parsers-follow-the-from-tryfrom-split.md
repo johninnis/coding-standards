@@ -1,4 +1,4 @@
-# 0002. Value parsers follow PHP's `from`/`tryFrom` split
+# 2. Value parsers follow PHP's `from`/`tryFrom` split
 
 ## Status
 

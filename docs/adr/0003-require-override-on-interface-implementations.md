@@ -1,4 +1,4 @@
-# 0003. `#[\Override]` is required on interface implementations, not only parent overrides
+# 3. `#[\Override]` is required on interface implementations, not only parent overrides
 
 ## Status
 

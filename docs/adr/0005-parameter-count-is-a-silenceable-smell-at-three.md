@@ -1,4 +1,4 @@
-# 0005. Parameter count is a silenceable smell at a threshold of three
+# 5. Parameter count is a silenceable smell at a threshold of three
 
 ## Status
 

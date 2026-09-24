@@ -1,4 +1,4 @@
-# 0014. Misplaced unlayered code is caught by the contracts it declares
+# 14. Misplaced unlayered code is caught by the contracts it declares
 
 ## Status
 

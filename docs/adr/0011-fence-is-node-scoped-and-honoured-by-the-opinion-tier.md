@@ -1,4 +1,4 @@
-# 0011. The deliberate-fence is node-scoped, and the opinion rules honour it
+# 11. The deliberate-fence is node-scoped, and the opinion rules honour it
 
 ## Status
 

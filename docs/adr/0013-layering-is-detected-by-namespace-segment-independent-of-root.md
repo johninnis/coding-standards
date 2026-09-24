@@ -1,4 +1,4 @@
-# 0013. Layer membership is a namespace segment, independent of the root namespace
+# 13. Layer membership is a namespace segment, independent of the root namespace
 
 ## Status
 

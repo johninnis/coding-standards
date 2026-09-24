@@ -1,4 +1,4 @@
-# 0001. Domain purity is detected with a curated built-in denylist
+# 1. Domain purity is detected with a curated built-in denylist
 
 ## Status
 

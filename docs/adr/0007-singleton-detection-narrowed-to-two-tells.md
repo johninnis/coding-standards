@@ -1,4 +1,4 @@
-# 0007. Singleton detection is narrowed to two unambiguous tells
+# 7. Singleton detection is narrowed to two unambiguous tells
 
 ## Status
 

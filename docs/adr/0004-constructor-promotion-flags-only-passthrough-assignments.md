@@ -1,4 +1,4 @@
-# 0004. The constructor-promotion rule flags only pass-through assignments
+# 4. The constructor-promotion rule flags only pass-through assignments
 
 ## Status
 

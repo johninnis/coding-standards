@@ -1,4 +1,4 @@
-# 0010. Primitive-at-boundary is detected by matching a parameter name to a value object
+# 10. Primitive-at-boundary is detected by matching a parameter name to a value object
 
 ## Status
 

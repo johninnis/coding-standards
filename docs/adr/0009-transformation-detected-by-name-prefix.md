@@ -1,4 +1,4 @@
-# 0009. A transformation is detected by a curated name prefix, and must not return void
+# 9. A transformation is detected by a curated name prefix, and must not return void
 
 ## Status
 

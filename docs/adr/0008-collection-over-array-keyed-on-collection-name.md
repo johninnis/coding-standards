@@ -1,4 +1,4 @@
-# 0008. Collection-over-array is keyed on the collection's name and gated on its existence
+# 8. Collection-over-array is keyed on the collection's name and gated on its existence
 
 ## Status
 

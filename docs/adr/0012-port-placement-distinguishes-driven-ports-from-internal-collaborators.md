@@ -1,4 +1,4 @@
-# 0012. Port placement is decided by who constructs the implementation
+# 12. Port placement is decided by who constructs the implementation
 
 ## Status
 
