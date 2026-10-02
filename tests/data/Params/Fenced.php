@@ -10,8 +10,4 @@ final class Wired
     public function fenced(string $a, string $b, string $c, string $d): void
     {
     }
-
-    public function unfenced(string $a, string $b, string $c, string $d): void
-    {
-    }
 }

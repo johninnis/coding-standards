@@ -108,7 +108,7 @@ final class DomainPurityRule implements Rule
     {
         $errors = [];
 
-        // The fence lands on the enclosing member or class, not the impure call itself; see ADR-0011.
+        // The fence lands on the enclosing member or class, not the impure call itself; see ADR-0016.
         foreach ($statements as $statement) {
             if ($statement instanceof ClassLike) {
                 if ($this->fence->isFenced($statement)) {
