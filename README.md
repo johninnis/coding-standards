@@ -79,6 +79,16 @@ parameters:
         - identifier: innis.serviceSuffix
 ```
 
+## Path lengths
+
+`vendor/bin/check-path-lengths` fails when any tracked path (`git ls-files`) holds a component longer than 95 characters, the longest JSR accepts. The limit holds in every Innis repository, PHP included, so a file such as an ADR keeps one name in a package and its TypeScript port. Run it in CI after the other gates:
+
+```json
+"scripts": {
+    "check-path-lengths": "check-path-lengths"
+}
+```
+
 ## Development
 
 ```sh
@@ -86,4 +96,5 @@ composer test          # phpunit + phpstan (self-analysis, dogfooding these rule
 composer analyse       # phpstan only
 composer check-style   # php-cs-fixer dry-run
 composer check-rector  # Rector 8.4 modernisation, dry run (CI gate)
+composer check-path-lengths  # no tracked path component over 95 characters
 ```

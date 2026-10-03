@@ -1,0 +1,34 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Innis\CodingStandards\Check\PathLengths;
+
+foreach ([__DIR__.'/../vendor/autoload.php', __DIR__.'/../../../autoload.php'] as $autoload) {
+    if (is_file($autoload)) {
+        require $autoload;
+        break;
+    }
+}
+
+$output = [];
+exec('git ls-files -z', $output, $status);
+if (0 !== $status) {
+    fwrite(STDERR, "git ls-files failed (exit {$status}); run this from inside a git repository.\n");
+    exit(2);
+}
+
+$paths = array_values(array_filter(explode("\0", implode("\n", $output)), static fn (string $path): bool => '' !== $path));
+$overlong = PathLengths::overlong($paths);
+
+if ([] !== $overlong) {
+    fwrite(STDERR, sprintf("Found %d path(s) with a component over %d characters:\n", count($overlong), PathLengths::MAX_COMPONENT_LENGTH));
+    foreach ($overlong as $path) {
+        fwrite(STDERR, "  - {$path}\n");
+    }
+    fwrite(STDERR, "\nShorten each: JSR refuses a longer path component, and the limit holds in every Innis repository.\n");
+    exit(1);
+}
+
+echo sprintf("All %d tracked path(s) keep every component within %d characters.\n", count($paths), PathLengths::MAX_COMPONENT_LENGTH);

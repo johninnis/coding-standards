@@ -19,6 +19,8 @@ Record every architectural decision that is not self-evident as an Architecture 
 - Records are immutable. A decision is never edited to reverse it; a new record supersedes it, and the old one's Status is updated to point forward.
 - Each record stands on its own engineering merits. It does not appeal to an external policy document as its justification — if the only reason for a choice is "a policy told me to", the real reason has not yet been found.
 
+A record's filename is its four-digit number and a kebab-case slug of its title, at most 95 characters including the `.md` extension, the longest path component JSR accepts. A longer title is shortened in the filename, never in the record's heading.
+
 ## Consequences
 
 - A reviewer reads `docs/adr/` before judging the code, and does not flag or "simplify" anything a record already justifies.

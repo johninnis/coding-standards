@@ -1,6 +1,6 @@
 {
     "name": "innis/coding-standards",
-    "description": "PHPStan rules that enforce the Innis coding conventions: clean-architecture layering, banned traits, interface/collection/exception placement, value-object immutability, and naming smells.",
+    "description": "PHPStan rules that enforce the Innis coding conventions: clean-architecture layering, banned traits, interface/collection/exception placement, value-object immutability, and naming smells; plus a check that no tracked path component exceeds 95 characters.",
     "type": "phpstan-extension",
     "license": "MIT",
     "authors": [
@@ -31,6 +31,9 @@
             "Innis\\CodingStandards\\Tests\\": "tests/"
         }
     },
+    "bin": [
+        "bin/check-path-lengths"
+    ],
     "extra": {
         "phpstan": {
             "includes": [
@@ -52,7 +55,8 @@
         "fix-style": "php-cs-fixer fix",
         "check-style": "php-cs-fixer fix --dry-run --diff",
         "rector": "rector process",
-        "check-rector": "rector process --dry-run"
+        "check-rector": "rector process --dry-run",
+        "check-path-lengths": "bin/check-path-lengths"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
