@@ -23,7 +23,7 @@ includes:
 
 This manual `includes:` entry is required unless the project has [`phpstan/extension-installer`](https://github.com/phpstan/extension-installer) installed, in which case the rules are registered automatically and no `includes:` line is needed.
 
-Requires PHP 8.4+ and PHPStan `~2.2.6`. It runs at any PHPStan level; the rules are independent of the level setting.
+Requires PHP 8.4+ and PHPStan `~2.3.1`. It runs at any PHPStan level; the rules are independent of the level setting.
 
 ## What it enforces
 
